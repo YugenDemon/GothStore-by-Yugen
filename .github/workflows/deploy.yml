@@ -1,0 +1,25 @@
+name: Deploy Web to Public Repo
+
+on:
+  push:
+    branches: [main]  # O usa "master" si esa es tu rama
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Copy to deployment repository
+      run: |
+        git config --global user.name "YugenDemon"
+        git config --global user.email "demonyugen@gmail.com"
+        git clone https://github.com/YugenDemon/GothStore.git deploy-repo
+        rm -rf deploy-repo/*
+        cp -r * deploy-repo/
+        cd deploy-repo
+        git add .
+        git commit -m "Actualización automática"
+        git push https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/YugenDemon/GothStore.git main
