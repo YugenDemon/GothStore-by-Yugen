@@ -12,15 +12,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Copy to deployment repository
+    - name: Configurar usuario Git
       run: |
         git config --global user.name "YugenDemon"
         git config --global user.email "demonyugen@gmail.com"
+
+    - name: Clonar el repositorio público
+      run: |
         git clone https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/YugenDemon/GothStore.git deploy-repo
 
-        # Copia todo EXCEPTO deploy-repo
+    - name: Copiar archivos al repositorio público
+      run: |
         rsync -av --progress ./ ./deploy-repo --exclude deploy-repo
-
         cd deploy-repo
         git add .
         git commit -m "Actualización automática"
