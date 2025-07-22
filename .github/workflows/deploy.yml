@@ -16,13 +16,9 @@ jobs:
       run: |
         git config --global user.name "YugenDemon"
         git config --global user.email "demonyugen@gmail.com"
-        
-        # Clonar el repositorio público
-        git clone https://github.com/YugenDemon/GothStore.git deploy-repo
-
-        # Copiar los archivos desde el repo privado, evitando copiar el propio deploy-repo
-        rsync -av --progress ./ ./deploy-repo --exclude deploy-repo --exclude .git --exclude .github
-
+        git clone https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/YugenDemon/GothStore.git deploy-repo
+        rm -rf deploy-repo/*
+        cp -r * deploy-repo/
         cd deploy-repo
         git add .
         git commit -m "Actualización automática"
