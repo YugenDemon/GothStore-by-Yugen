@@ -17,8 +17,10 @@ jobs:
         git config --global user.name "YugenDemon"
         git config --global user.email "demonyugen@gmail.com"
         git clone https://x-access-token:${{ secrets.DEPLOY_TOKEN }}@github.com/YugenDemon/GothStore.git deploy-repo
-        rm -rf deploy-repo/*
-        cp -r * deploy-repo/
+
+        # Copia todo EXCEPTO deploy-repo
+        rsync -av --progress ./ ./deploy-repo --exclude deploy-repo
+
         cd deploy-repo
         git add .
         git commit -m "Actualización automática"
